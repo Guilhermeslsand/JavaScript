@@ -1,4 +1,5 @@
 const express = require('express')
+const {v4: uuidv4} = require('uuid')
 const app = express()
 app.use(express.json())
 /*
@@ -10,16 +11,26 @@ app.use(express.json())
   2: []
 }
 */
-const baseObservacoes = {}
+const baseObservacoes = {}  
 //POST /lembretes/1/observacoes
-app.post('/lembretes/:id/observacoes',(req, res) => {
-
+app.post('/lembretes/:id/observacoes',(req, res) =>{
+  const idObs = uuidv4()
+  const { texto } = req.body
+  const observacao = {
+    id: idObs,
+    texto,
+    idLembrete: req.params.id
   }
-)
+  const observacoes =  baseObservacoes[req.params.id] || []
+  observacoes.push(observacao)
+  baseObservacoes[req.params.id] = observacoes
+  res.status(201).json(observacao)
+})
+
 //GET
 app.get('/lembretes/:id/observacoes', (req, res) => {
-
+  res.json(baseObservacoes[req.params.id])
 })
 
 const port = 5000
-app.listen(port, console.log(`Observações. Porta ${porta}.`))
+app.listen(port, console.log(`Observações. Porta ${port}.`))
