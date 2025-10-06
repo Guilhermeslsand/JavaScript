@@ -31,7 +31,13 @@ app.post('/lembretes', (req, res) => {
   const lembrete = { id, texto }
   baseLembretes[id] = lembrete
   id++
-  res.json(lembrete)
+  res.status(201).json(lembrete)
+})
+
+app.put('/lembretes/:id', (req,res) => {
+  const {texto} = req.body
+  baseLembretes[req.params.id]['texto'] = texto
+  res.json(baseLembretes[req.params.id])
 })
 
 const port = 4000
