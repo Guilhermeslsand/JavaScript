@@ -40,6 +40,11 @@ app.put('/lembretes/:id', (req,res) => {
   res.json(baseLembretes[req.params.id])
 })
 
+app.delete('/lembretes/:id', (req,res) => {
+  baseLembretes[req.params.id] = null
+  res.json(204)
+})
+
 const port = 4000
 app.listen(
   port, 
